@@ -5,6 +5,17 @@ import { Delete, Edit, Save } from '@mui/icons-material';
 export const TaskItem = ({ task, index, tasks, setTasks, onDelete, onEdit, onToggle }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedTask, setEditedTask] = useState(task.text || '');
+  const [error, setError] = useState('');
+
+  const handleInputChange = (e) => {
+    const value = e.target.value;
+    if (value.length > 50) {
+      setError('Текст не может содержать более 50 символов.');
+    } else {
+      setError('');
+      setEditedTask(value);
+    }
+  };
 
   const handleSave = () => {
         if (editedTask.trim()) {
@@ -29,9 +40,11 @@ export const TaskItem = ({ task, index, tasks, setTasks, onDelete, onEdit, onTog
         {isEditing ? (
           <TextField
             value={editedTask}
-            onChange={(e) => setEditedTask(e.target.value)}
+            onChange={handleInputChange}
             fullWidth
             size="small"
+            error={!!error}
+            helperText={error}
           />
         ) : (
           <ListItemText

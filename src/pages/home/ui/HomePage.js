@@ -9,7 +9,18 @@ export default function HomePage() {
 
     const [tasks, setTasks] = useState([]);
     const [taskInput, setTaskInput] = useState('');
+    const [error, setError] = useState('');
   
+    const handleInputChange = (e) => {
+        const value = e.target.value;
+        if (value.length > 50) {
+          setError('Текст не может содержать более 50 символов.');
+        } else {
+          setError('');
+          setTaskInput(value);
+        }
+    };
+
     const handleAddTask = () => {
         addTask(taskInput, tasks, setTasks);
         setTaskInput('');
@@ -30,7 +41,7 @@ export default function HomePage() {
     return(
         <Grid2 container spacing={2} display={'flex'} alignItems={'center'} justifyContent={'center'} flexDirection={'column'}>
             <h1>Tasks</h1>
-            <Grid2 container spacing={2} display={'flex'} justifyContent={'center'} alignItems={'center'} size={8}>
+            <Grid2 container spacing={2} display={'flex'} justifyContent={'center'} size={8}>
                 <Grid2 size={6}>
                     <TextField
                         id="outlined-basic"
@@ -38,13 +49,15 @@ export default function HomePage() {
                         variant="outlined"
                         fullWidth
                         value={taskInput}
-                        onChange={(e) => setTaskInput(e.target.value)}
+                        onChange={handleInputChange}
+                        error={!!error}
+                        helperText={error}
                     />
                 </Grid2>
-                <Grid2>
+                <Grid2 sx={{ alignItems: 'flex-start', justifyContent: 'flex-start', height: '100%', display: 'flex' }}>
                     <Button
                         variant="contained"
-                        style={{height: 54}}
+                        sx={{height: '54px'}}
                         fullWidth
                         onClick={handleAddTask}
                         disabled={!taskInput.trim()}
