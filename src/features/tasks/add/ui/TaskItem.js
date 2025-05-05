@@ -49,6 +49,7 @@ export const TaskItem = ({ task, index, tasks, setTasks, onDelete, onEdit, onTog
         ) : (
           <ListItemText
             primary={task.text || 'Нет текста'}
+            secondary={`Создано: ${task.createdAt}`}
             sx={{
               textDecoration: task.completed ? 'line-through' : 'none',
             }}
